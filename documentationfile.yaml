@@ -1,0 +1,967 @@
+openapi: 3.0.0
+info:
+  title: Musa Healthcares API
+  version: "1.0.0"
+  description: |
+    API documentation for managing appointments in Musa Healthcares.
+  contact:
+    name: Imanariyo Baptiste
+    email: "imanariyo@gmail.com"
+    url: "tel:0787795163"
+servers:
+  - url: http://localhost:3330
+  - url: https://musahealthcareapi.onrender.com
+    description: Local development server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Testimony:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the testimonier
+        contacts:
+          type: string
+          description: The contacts of the testimonier
+        maintestimony:
+          type: string
+          description: The content of the testimony
+        image:
+          type: string
+          format: binary
+          description: The image file for the testimony it may be used as profile
+        images:
+          type: array
+          items:
+            type: string
+            format: binary
+          description: The additional imageslike of symptoms or what ever else files for the testimony
+        date:
+          type: string
+          format: date-time
+          description: The date of the testimony
+        rating:
+          type: number
+          minimum: 0
+          maximum: 5
+          description: The rating of the testimony
+        disease:
+          type: string
+          description: The ID of the associated disease (optional)
+    Service:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the service
+        image:
+          type: string
+          format: binary
+          description: The image of the service
+        description:
+          type: string
+          description: Description of the service
+        beneficiaries:
+          type: array
+          items:
+            type: string
+          description: List of beneficiaries
+paths:
+  /contact/createContact:
+    post:
+      summary: Create a new contact
+      tags: [contact]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  default: John Doe
+                email:
+                  type: string
+                  default: johndoe@example.com
+                subject:
+                  type: string
+                  default: Inquiry
+                telephone:
+                  type: string
+                  default: "+1234567890"
+                message:
+                  type: string
+                  default: Hello, I have a question.
+      responses:
+        '201':
+          description: Contact created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Contact created successfully
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: 60fe5b6d2fba530015d48413
+                      name:
+                        type: string
+                        example: John Doe
+                      email:
+                        type: string
+                        example: johndoe@example.com
+                      subject:
+                        type: string
+                        example: Inquiry
+                      telephone:
+                        type: string
+                        example: "+1234567890"
+                      message:
+                        type: string
+                        example: Hello, I have a question.
+                      dateSent:
+                        type: string
+                        example: "2023-07-26T14:29:09.282Z"
+  /contact/replaycontact/{id}:
+    put:
+      summary: Update an existing contact by ID
+      tags: [contact]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID of the contact to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                
+                replaysubbject:
+                  type: string
+                  example: subject
+             
+                replaymessage:
+                  type: string
+                  example: Hello, I have a question.
+      responses:
+        '200':
+          description: Contact updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Contact updated successfully
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: 60fe5b6d2fba530015d48413
+                      name:
+                        type: string
+                        example: John Doe
+                      email:
+                        type: string
+                        example: johndoe@example.com
+                      subject:
+                        type: string
+                        example: Inquiry
+                      telephone:
+                        type: string
+                        example: "+1234567890"
+                      message:
+                        type: string
+                        example: Hello, I have a question.
+                      dateSent:
+                        type: string
+                        example: "2023-07-26T14:29:09.282Z"
+  /contact/deleteContact/{id}:
+    delete:
+      summary: Delete an existing contact by ID
+      tags: [contact]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID of the contact to delete
+      responses:
+        '200':
+          description: Contact deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Contact deleted successfully
+  /contact/getAllContacts:
+    get:
+      summary: Retrieve all contacts
+      tags: [contact]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: All contacts retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: All contacts retrieved successfully
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          example: 60fe5b6d2fba530015d48413
+                        name:
+                          type: string
+                          example: John Doe
+                        email:
+                          type: string
+                          example: johndoe@example.com
+                        subject:
+                          type: string
+                          example: Inquiry
+                        telephone:
+                          type: string
+                          example: "+1234567890"
+                        message:
+                          type: string
+                          example: Hello, I have a question.
+                        dateSent:
+                          type: string
+                          example: "2023-07-26T14:29:09.282Z"
+  /contact/getContactById/{id}:
+    get:
+      summary: Retrieve a contact by ID
+      tags: [contact]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID of the contact to retrieve
+      responses:
+        '200':
+          description: Contact retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Contact retrieved successfully
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: 60fe5b6d2fba530015d48413
+                      name:
+                        type: string
+                        example: John Doe
+                      email:
+                        type: string
+                        example: johndoe@example.com
+                      subject:
+                        type: string
+                        example: Inquiry
+                      telephone:
+                        type: string
+                        example: "+1234567890"
+                      message:
+                        type: string
+                        example: Hello, I have a question.
+                      dateSent:
+                        type: string
+                        example: "2023-07-26T14:29:09.282Z"
+ 
+  
+      summary: Create a new medicine
+      tags: 
+        - Medicine
+      security:
+        - bearerAuth: []
+      description: Endpoint to create a new medicine with support for image uploads.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the medicine
+                description:
+                  type: string
+                  description: Description of the medicine
+                price:
+                  type: number
+                images:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Images of the medicine
+                diseases:
+                  type: array
+                  items:
+                    type: string
+                  description: List of disease IDs associated with the medicine
+                treesUsed:
+                  type: array
+                  items:
+                    type: string
+                  description: List of tree IDs associated with the medicine
+                frequency:
+                  type: string
+                  description: Frequency of taking the medicine
+                additionMaterialsTomakeIt:
+                  type: array
+                  items:
+                    type: string
+                  description: Additional materials required to make the medicine
+                procedureToMake:
+                  type: string
+                  description: Procedure to make the medicine
+                procedureToTake:
+                  type: string
+                  description: Procedure to take the medicine
+                extraAdditionsTotakeit:
+                  type: array
+                  items:
+                    type: string
+                  description: Extra additions to take with the medicine
+                beneficiaries:
+                  type: array
+                  items:
+                    type: string
+                  description: Beneficiaries of the medicine
+      responses:
+        '201':
+          description: Medicine created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medicine'
+ 
+
+      summary: Get partner by ID
+      tags:
+        - Partner
+      security:
+        - bearerAuth: []
+      description: Endpoint to retrieve a partner by ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the partner to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved partner by ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partner'
+  /service/createService:
+    post:
+      tags:
+        - Service
+      security:
+        - bearerAuth: []
+      summary: Create a new service
+      operationId: createService
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Service'
+      responses:
+        '200':
+          description: Service created successfully
+        '500':
+          description: Internal server error
+  /service/readServices:
+    get:
+      tags:
+        - Service
+      security:
+       - bearerAuth: []
+      summary: Get all services
+      operationId: getServices
+      responses:
+        '200':
+          description: List of services
+        '500':
+          description: Internal server error
+  /service/readServices/{id}:
+    get:
+      tags:
+        - Service
+      security:
+       - bearerAuth: []
+      summary: Get a service by ID
+      operationId: getServiceById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID of the service
+      responses:
+        '200':
+          description: Service found
+        '404':
+          description: Service not found
+        '500':
+          description: Internal server error
+  /service/updateService/{id}:
+    put:
+      tags:
+        - Service
+      security:
+        - bearerAuth: []
+      summary: Update a service by ID
+      operationId: updateServiceById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID of the service
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Service'
+      responses:
+        '200':
+          description: Service updated successfully
+        '404':
+          description: Service not found
+        '500':
+          description: Internal server error
+  /service/deleteService/{id}:
+    delete:
+      tags:
+        - Service
+      security:
+        - bearerAuth: []
+      summary: Delete a service by ID
+      operationId: deleteServiceById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID of the service
+      responses:
+        '200':
+          description: Service deleted successfully
+        '404':
+          description: Service not found
+        '500':
+          description: Internal server error
+  /testimony/createTestimony:
+    post:
+      tags:
+        - Testimony
+      security:
+        - bearerAuth: []
+      summary: Create a new testimony
+      operationId: createTestimony
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Testimony'
+      responses:
+        '200':
+          description: Testimony created successfully
+        '500':
+          description: Internal server error
+  /testimony/getTestimony:
+    get:
+      tags:
+        - Testimony
+      summary: Get all testimonies
+      operationId: getTestimonies
+      responses:
+        '200':
+          description: List of testimonies
+        '500':
+          description: Internal server error
+  /testimony/getTestimony/{id}:
+    get:
+      tags:
+        - Testimony
+      security:
+        - bearerAuth: []
+      summary: Get a testimony by ID
+      operationId: getTestimonyById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID of the testimony
+      responses:
+        '200':
+          description: Testimony found
+        '404':
+          description: Testimony not found
+        '500':
+          description: Internal server error
+  /testimony/updateTestimony/{id}:
+    put:
+      tags:
+        - Testimony
+      security:
+        - bearerAuth: []
+      summary: Update a testimony by ID
+      operationId: updateTestimonyById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID of the testimony
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Testimony'
+      responses:
+        '200':
+          description: Testimony updated successfully
+        '404':
+          description: Testimony not found
+        '500':
+          description: Internal server error
+  /testimony/deleteTestimony/{id}:
+    delete:
+      tags:
+        - Testimony
+      security:
+        - bearerAuth: []
+      summary: Delete a testimony by ID
+      operationId: deleteTestimonyById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID of the testimony
+      responses:
+        '200':
+          description: Testimony deleted successfully
+        '404':
+          description: Testimony not found
+        '500':
+         description: Internal server error
+      
+  /auth/signup:
+    post:
+      summary: User Signup
+      tags: [authentication]
+      operationId: signup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - fullNames
+                - email
+                - password
+                - phoneNumber
+                - sex
+                - location
+                - role
+              properties:
+                fullNames:
+                  type: string
+                  example: "John Doe"
+                sex:
+                  type: string
+                  example: "Male"  
+                email:
+                  type: string
+                  example: "imanariyobaptiste@gmail.com"
+                password:
+                  type: string
+                  example: "123"
+                phoneNumber:
+                  type: number
+                  example: 1234567890
+                location:
+                  type: string
+                  example: "City, Country"
+                role:
+                  type: string
+                  example: "user"
+      responses:
+        '200':
+          description: User registered successfully
+        '500':
+          description: Internal Server Error
+
+  /auth/login:
+    post:
+      summary: User Login
+      tags: [authentication]
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: "imanariyobaptiste@gmail.com"
+                password:
+                  type: string
+                  example: "123"
+      responses:
+        '200':
+          description: User logged in successfully
+        '401':
+          description: Unauthorized - Invalid credentials
+        '500':
+          description: Internal Server Error
+
+  /auth/forget:
+    post:
+      summary: Generate and Send OTP for Password Reset
+      tags: [authentication]
+
+      operationId: generateAndSendOTP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  example: "imanariyobaptiste@gmail.com"
+      responses:
+        '200':
+          description: OTP generated and sent successfully
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+
+  /auth/reset:
+    post:
+      summary: Verify OTP and Update Password
+      tags: [authentication]
+      operationId: verifyOTPAndUpdatePassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - otp
+                - newpassword
+              properties:
+                email:
+                  type: string
+                  example: "imanariyobaptiste@gmail.com"
+                otp:
+                  type: string
+                  example: "4225261"
+                newpassword:
+                  type: string
+                  example: "123"
+      responses:
+        '200':
+          description: Password updated successfully
+        '404':
+          description: User not found
+        '401':
+          description: Unauthorized - Invalid OTP
+        '500':
+          description: Internal Server Error
+
+  /auth/change:
+    post:
+      summary: Change Password (Authenticated Route)
+      tags: [authentication]
+      operationId: changepassword
+      parameters:
+        - name: Authorization
+          in: header
+          description: JWT token obtained after user login
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - currentpassword
+                - newpassword
+              properties:
+                currentpassword:
+                  type: string
+                  example: "123"
+                newpassword:
+                  type: string
+                  example: "123"
+      responses:
+        '200':
+          description: Password changed successfully
+        '401':
+          description: Unauthorized - Invalid token
+        '500':
+          description: Internal Server Error
+  /auth/getAllUsers:
+    get:
+      summary: 'Get all users'
+      tags:
+        - 'authentication'
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 'Users retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'Success message'
+                    example: 'Users retrieved successfully'
+                  users:
+                    type: array
+                    description: 'List of users'
+                    items:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                          description: 'User email'
+                        location:
+                          type: string
+                          description: 'User location'
+                        fullname:
+                          type: string
+                          description: 'User full name'
+                        phone:
+                          type: string
+                          description: 'User phone number'
+                        role:
+                          type: string
+                          enum: 
+                            - user
+                            - admin
+                            - travelAgency
+                            - routesSetter
+                          description: 'User role'
+        '404':
+          description: 'No users found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'Error message'
+                    example: 'No users found'
+        '500':
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'Error message'
+                    example: 'Internal Server Error'
+  /auth/updateUserById/{id}:
+    patch:
+      summary: "Update a user by ID"
+      tags:
+        - 'authentication'
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - fullNames
+                - email
+                - password
+                - phoneNumber
+                - sex
+                - location
+                - role
+              properties:
+                fullNames:
+                  type: string
+                  example: "John Doe"
+                sex:
+                  type: string
+                  example: "Male"  
+                email:
+                  type: string
+                  example: "imanariyobaptiste@gmail.com"
+                password:
+                  type: string
+                  example: "123"
+                phoneNumber:
+                  type: number
+                  example: 1234567890
+                location:
+                  type: string
+                  example: "City, Country"
+                role:
+                  type: string
+                  example: "user"
+      responses:
+        '200':
+          description: User registered successfully
+        '500':
+          description: Internal Server Error
+
+  /auth/login:
+    post:
+      summary: User Login
+      tags: [authentication]
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: "imanariyobaptiste@gmail.com"
+                password:
+                  type: string
+                  example: "123"
+      responses:
+        '200':
+          description: User logged in successfully
+        '401':
+          description: Unauthorized - Invalid credentials
+        '500':
+          description: Internal Server Error
+
+  /auth/forget:
+    post:
+      summary: Generate and Send OTP for Password Reset
+      tags: [authentication]
+
+      operationId: generateAndSendOTP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  example: "imanariyobaptiste@gmail.com"             
+      responses:
+        '200':
+          description: User updated successfully
+        '500':
+          description: Internal Server Error
+ 
