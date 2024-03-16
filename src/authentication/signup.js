@@ -6,7 +6,12 @@ import { signupHtmlMessage } from "../utils/index.js";
 import cron from "node-cron";
 import { generateOTP } from "../utils/index.js";
 import { catchAsync } from "../middlewares/globaleerorshandling.js";
-
+import { v2 as cloudinary } from 'cloudinary'
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
+})
 
 
 const scheduleUserDeletion = (userId, signupTime) => {
@@ -48,6 +53,12 @@ export const signup = catchAsync(async (req, res, next) => {
   const otpExpiresAt = otpDetails.expiresAt;
   newUserDetails.otp = verificationToken;
   newUserDetails.otpExpiresAt = otpExpiresAt;
+  if (req.files && req.files.image) {
+    console.log('Images processing ', '____________________')
+    newUserDetails.image = (await cloudinary.uploader.upload(
+      req.files.image[0].path
+    )).secure_url
+  }
   const verificationLink = `https://routeeasyapi.onrender.com/auth/verify-email?token=${verificationToken}`;
   let newUser = await userconst.create(newUserDetails);
 
@@ -58,13 +69,7 @@ export const signup = catchAsync(async (req, res, next) => {
   res.status(200).json({
     message: "User registered successfully",
     accesstoken: token,
-    userinfomation: {
-      email: newUser.email,
-      fullnames: newUser.fullNames,
-      phoneNumber: newUser.phoneNumber,
-      location: newUser.location,
-      role: newUser.role,
-    },
+    user: newUser,
   });
 
   // scheduleUserDeletion(newUser._id, newUser.createdAt);

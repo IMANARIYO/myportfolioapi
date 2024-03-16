@@ -1,16 +1,16 @@
 openapi: 3.0.0
 info:
-  title: Musa Healthcares API
+  title: IMANARIYO BAPTISTE API
   version: "1.0.0"
   description: |
-    API documentation for managing appointments in Musa Healthcares.
+    API documentation for managing PERSONALAPI in FOR IMANARIYO BAPTISTE.
   contact:
     name: Imanariyo Baptiste
     email: "imanariyo@gmail.com"
     url: "tel:0787795163"
 servers:
   - url: http://localhost:3330
-  - url: https://musahealthcareapi.onrender.com
+  - url: https://imanariyobaptisteportfolioapi.onrender.com
     description: Local development server
 components:
   securitySchemes:
@@ -72,6 +72,283 @@ components:
             type: string
           description: List of beneficiaries
 paths:
+  /auth/signup:
+    post:
+      summary: User Signup
+      tags: [authentication]
+      operationId: signup
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fullNames:
+                  type: string
+                  example: John Doe
+                gender:
+                  type: string
+                  example: Male
+                email:
+                  type: string
+                  example: imanariyobaptiste@gmail.com
+                password:
+                  type: string
+                  example: "123"
+                phoneNumber:
+                  type: number
+                  example: 1234567890
+                location:
+                  type: string
+                  example: City, Country
+                role:
+                  type: string
+                  example: user
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: User registered successfully
+        '500':
+          description: Internal Server Error
+  /auth/login:
+    post:
+      summary: User Login
+      tags: [authentication]
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: imanariyobaptiste@gmail.com
+                password:
+                  type: string
+                  example: "123"
+      responses:
+        '200':
+          description: User logged in successfully
+        '401':
+          description: Unauthorized - Invalid credentials
+        '500':
+          description: Internal Server Error
+  /auth/forget:
+    post:
+      summary: Generate and Send OTP for Password Reset
+      tags: [authentication]
+      operationId: generateAndSendOTP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  example: imanariyobaptiste@gmail.com
+      responses:
+        '200':
+          description: OTP generated and sent successfully
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+  /auth/reset:
+    post:
+      summary: Verify OTP and Update Password
+      tags: [authentication]
+      operationId: verifyOTPAndUpdatePassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - otp
+                - newpassword
+              properties:
+                email:
+                  type: string
+                  example: imanariyobaptiste@gmail.com
+                otp:
+                  type: string
+                  example: "4225261"
+                newpassword:
+                  type: string
+                  example: "123"
+      responses:
+        '200':
+          description: Password updated successfully
+        '404':
+          description: User not found
+        '401':
+          description: Unauthorized - Invalid OTP
+        '500':
+          description: Internal Server Error
+  /auth/change:
+    post:
+      summary: Change Password (Authenticated Route)
+      tags: [authentication]
+      operationId: changePassword
+      parameters:
+        - name: Authorization
+          in: header
+          description: JWT token obtained after user login
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - currentpassword
+                - newpassword
+              properties:
+                currentpassword:
+                  type: string
+                  example: "123"
+                newpassword:
+                  type: string
+                  example: "123"
+      responses:
+        '200':
+          description: Password changed successfully
+        '401':
+          description: Unauthorized - Invalid token
+        '500':
+          description: Internal Server Error
+  /auth/getAllUsers:
+    get:
+      summary: Get all users
+      tags: [authentication]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+                    example: Users retrieved successfully
+                  users:
+                    type: array
+                    description: List of users
+                    items:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                          description: User email
+                        location:
+                          type: string
+                          description: User location
+                        fullNames:
+                          type: string
+                          description: User full name
+                        phone:
+                          type: string
+                          description: User phone number
+                        role:
+                          type: string
+                          enum: 
+                            - user
+                            - admin
+                            - travelAgency
+                            - routesSetter
+                          description: User role
+        '404':
+          description: No users found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                    example: No users found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                    example: Internal Server Error
+  /auth/updateUserById/{id}:
+    patch:
+      summary: Update a user by ID
+      tags: [authentication]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fullNames:
+                  type: string
+                  example: John Doe
+                gender:
+                  type: string
+                  example: Male
+                phone:
+                  type: string
+                  example: 0787795163  
+                email:
+                  type: string
+                  example: imanariyobaptiste@gmail.com
+                password:
+                  type: string
+                  example: "123"
+                phoneNumber:
+                  type: number
+                  example: 1234567890
+                location:
+                  type: string
+                  example: City, Country
+                role:
+                  type: string
+                  example: user
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: User updated successfully
+        '500':
+          description: Internal Server Error
   /contact/createContact:
     post:
       summary: Create a new contact
@@ -627,341 +904,4 @@ paths:
         '500':
          description: Internal server error
       
-  /auth/signup:
-    post:
-      summary: User Signup
-      tags: [authentication]
-      operationId: signup
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - fullNames
-                - email
-                - password
-                - phoneNumber
-                - sex
-                - location
-                - role
-              properties:
-                fullNames:
-                  type: string
-                  example: "John Doe"
-                sex:
-                  type: string
-                  example: "Male"  
-                email:
-                  type: string
-                  example: "imanariyobaptiste@gmail.com"
-                password:
-                  type: string
-                  example: "123"
-                phoneNumber:
-                  type: number
-                  example: 1234567890
-                location:
-                  type: string
-                  example: "City, Country"
-                role:
-                  type: string
-                  example: "user"
-      responses:
-        '200':
-          description: User registered successfully
-        '500':
-          description: Internal Server Error
-
-  /auth/login:
-    post:
-      summary: User Login
-      tags: [authentication]
-      operationId: login
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  example: "imanariyobaptiste@gmail.com"
-                password:
-                  type: string
-                  example: "123"
-      responses:
-        '200':
-          description: User logged in successfully
-        '401':
-          description: Unauthorized - Invalid credentials
-        '500':
-          description: Internal Server Error
-
-  /auth/forget:
-    post:
-      summary: Generate and Send OTP for Password Reset
-      tags: [authentication]
-
-      operationId: generateAndSendOTP
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-              properties:
-                email:
-                  type: string
-                  example: "imanariyobaptiste@gmail.com"
-      responses:
-        '200':
-          description: OTP generated and sent successfully
-        '404':
-          description: User not found
-        '500':
-          description: Internal Server Error
-
-  /auth/reset:
-    post:
-      summary: Verify OTP and Update Password
-      tags: [authentication]
-      operationId: verifyOTPAndUpdatePassword
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - otp
-                - newpassword
-              properties:
-                email:
-                  type: string
-                  example: "imanariyobaptiste@gmail.com"
-                otp:
-                  type: string
-                  example: "4225261"
-                newpassword:
-                  type: string
-                  example: "123"
-      responses:
-        '200':
-          description: Password updated successfully
-        '404':
-          description: User not found
-        '401':
-          description: Unauthorized - Invalid OTP
-        '500':
-          description: Internal Server Error
-
-  /auth/change:
-    post:
-      summary: Change Password (Authenticated Route)
-      tags: [authentication]
-      operationId: changepassword
-      parameters:
-        - name: Authorization
-          in: header
-          description: JWT token obtained after user login
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - currentpassword
-                - newpassword
-              properties:
-                currentpassword:
-                  type: string
-                  example: "123"
-                newpassword:
-                  type: string
-                  example: "123"
-      responses:
-        '200':
-          description: Password changed successfully
-        '401':
-          description: Unauthorized - Invalid token
-        '500':
-          description: Internal Server Error
-  /auth/getAllUsers:
-    get:
-      summary: 'Get all users'
-      tags:
-        - 'authentication'
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: 'Users retrieved successfully'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: 'Success message'
-                    example: 'Users retrieved successfully'
-                  users:
-                    type: array
-                    description: 'List of users'
-                    items:
-                      type: object
-                      properties:
-                        email:
-                          type: string
-                          description: 'User email'
-                        location:
-                          type: string
-                          description: 'User location'
-                        fullname:
-                          type: string
-                          description: 'User full name'
-                        phone:
-                          type: string
-                          description: 'User phone number'
-                        role:
-                          type: string
-                          enum: 
-                            - user
-                            - admin
-                            - travelAgency
-                            - routesSetter
-                          description: 'User role'
-        '404':
-          description: 'No users found'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: 'Error message'
-                    example: 'No users found'
-        '500':
-          description: 'Internal Server Error'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: 'Error message'
-                    example: 'Internal Server Error'
-  /auth/updateUserById/{id}:
-    patch:
-      summary: "Update a user by ID"
-      tags:
-        - 'authentication'
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - fullNames
-                - email
-                - password
-                - phoneNumber
-                - sex
-                - location
-                - role
-              properties:
-                fullNames:
-                  type: string
-                  example: "John Doe"
-                sex:
-                  type: string
-                  example: "Male"  
-                email:
-                  type: string
-                  example: "imanariyobaptiste@gmail.com"
-                password:
-                  type: string
-                  example: "123"
-                phoneNumber:
-                  type: number
-                  example: 1234567890
-                location:
-                  type: string
-                  example: "City, Country"
-                role:
-                  type: string
-                  example: "user"
-      responses:
-        '200':
-          description: User registered successfully
-        '500':
-          description: Internal Server Error
-
-  /auth/login:
-    post:
-      summary: User Login
-      tags: [authentication]
-      operationId: login
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  example: "imanariyobaptiste@gmail.com"
-                password:
-                  type: string
-                  example: "123"
-      responses:
-        '200':
-          description: User logged in successfully
-        '401':
-          description: Unauthorized - Invalid credentials
-        '500':
-          description: Internal Server Error
-
-  /auth/forget:
-    post:
-      summary: Generate and Send OTP for Password Reset
-      tags: [authentication]
-
-      operationId: generateAndSendOTP
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-              properties:
-                email:
-                  type: string
-                  example: "imanariyobaptiste@gmail.com"             
-      responses:
-        '200':
-          description: User updated successfully
-        '500':
-          description: Internal Server Error
  
