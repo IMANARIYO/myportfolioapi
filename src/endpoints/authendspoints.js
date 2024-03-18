@@ -1,4 +1,4 @@
-import { login,signup,verifyOTPAndUpdatePassword,generateAndSendOTP,changepassword, getAllUsers,deleteUserById,updateUserById, } from "../authentication/index.js";
+import { login,signup,verifyOTPAndUpdatePassword,generateAndSendOTP,changepassword, getAllUsers,deleteUserById,updateUserById, getUserById, } from "../authentication/index.js";
 import  express from "express";
 import { verifyingtoken } from "../utils/jwtfunctions.js";
 import { uploaded } from "../utils/multer.js";
@@ -11,5 +11,6 @@ authRouter.post("/forget", generateAndSendOTP);
 authRouter.delete("/deleteUserById/:id", deleteUserById);
 authRouter.patch("/updateUserById/:id",uploaded, updateUserById);
 authRouter.get("/getAllUsers", getAllUsers);
+authRouter.get("/getUserById/:id", getUserById);
 authRouter.post("/change", changepassword);
 export default authRouter;
