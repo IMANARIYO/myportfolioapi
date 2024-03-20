@@ -21,6 +21,6 @@ const contactSchema = new mongoose.Schema({
     type:String,
     required:false
   }
-}).set('strictPopulate', false);
+}, { timestamps: true }).set('strictPopulate', false);
 const Contact = mongoose.model('Contact', contactSchema);
 export default Contact;

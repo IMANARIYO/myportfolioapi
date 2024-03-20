@@ -6,7 +6,6 @@ import { v2 as cloudinary } from 'cloudinary'
 
 
 
-
 import Contact from '../models/contacts.js'
 
 import { todaysdate } from '../utils/datefunctin.js'
@@ -14,6 +13,8 @@ import Testimony from '../models/testmony.js'
 
 import { sendEmail } from '../utils/emailUtility.js'
 import { htmlMessagerespondContact, htmlMessageRejected, htmlMessagerespondAppointment } from '../utils/messages.js'
+import CommentModel from '../models/comments.js'
+import BlogModel from '../models/blogmodel.js'
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -44,79 +45,9 @@ const createObject = async (req, Model) => {
       req.files.image[0].path
     )).secure_url
   }
-  if (Model === Tree) {
-    if (newObject.farm && newObject.farm.length > 0) {
-      const farms = await Farm.find({ _id: { $in: newObject.farm } })
-      if (!farms || farms.length === 0) {
-        throw new AppError('Some farms not found', 404)
-      }
-    }
-    const result = await Model.create(newObject)
-    if (newObject.farm && newObject.farm.length > 0) {
-      await Farm.updateMany(
-        { _id: { $in: newObject.farm } },
-        { $push: { trees: result._id } }
-      )
-    }
-    return result
-  }
-  if (Model === Farm) {
-    if (newObject.trees && newObject.trees.length > 0) {
-      const listOfTrees = await Tree.find({ _id: { $in: newObject.trees } })
-      if (!listOfTrees || listOfTrees.length === 0) {
-        throw new AppError('Some trees not found', 404)
-      }
-    }
-    const result = await Model.create(newObject)
-    if (newObject.trees && newObject.trees.length > 0) {
-      await Tree.updateMany(
-        { _id: { $in: newObject.trees } },
-        { $push: { farm: result._id } }
-      )
-    }
-    return result
-  }
 
-  if (Model === Medicine) {
-    const result = await Model.create(newObject)
-    // Update diseases
-    if (newObject.diseases && newObject.diseases.length > 0) {
-      await Disease.updateMany(
-        { _id: { $in: newObject.diseases } },
-        { $push: { medicines: result._id } }
-      )
-    }
-    // Update treesUsed
-    if (newObject.treesUsed && newObject.treesUsed.length > 0) {
-      await Tree.updateMany(
-        { _id: { $in: newObject.treesUsed } },
-        { $push: { medicines: result._id } }
-      )
-    }
-    return result
-  }
-  if (Model === patientModel) {
-    const result = await Model.create(newObject)
-    // Update diseases
-    if (newObject.disease && newObject.disease.length > 0) {
-      await Disease.updateMany(
-        { _id: { $in: newObject.diseases } },
-        { $push: { patients: result._id } }
-      )
-    }
-    return result;
-  }
-  if (Model === Disease) {
-    const result = await Model.create(newObject)
-    // Update medicines
-    if (newObject.medicines && newObject.medicines.length > 0) {
-      await Medicine.updateMany(
-        { _id: { $in: newObject.medicines } },
-        { $push: { diseases: result._id } }
-      )
-    }
-    return result;
-  }
+
+
   if (Model === Testimony) {
     const result = await Model.create(newObject)
     // Update medicines
@@ -154,16 +85,9 @@ const handleModelOperation = (Model, operation) => {
         case 'read':
           if (req.params.id) {
             result = await Model.findById(req.params.id)
-            .populate('farm')
-            .populate('medicines')
-            .populate('vaccinations')
-            .populate('trees')
-            .populate('treesUsed')
-            .populate('tetsimonies')
-            .populate('patients')
-            .populate('vaccinations')
-            .populate('disease')
-            .populate('diseases')
+         .populate('tetsimonies')
+          
+            
             res.status(200).json({
               status: 'success',
               message: `${Model.modelName} retrieved successfully`,
@@ -171,16 +95,9 @@ const handleModelOperation = (Model, operation) => {
             })
           } else {
             result = await Model.find()
-              .populate('farm')
-              .populate('medicines')
-              .populate('vaccinations')
-              .populate('trees')
-              .populate('treesUsed')
+             
               .populate('tetsimonies')
-              .populate('patients')
-              .populate('vaccinations')
-              .populate('disease')
-              .populate('diseases')
+            
             res.status(200).json({
               status: 'success',
               message: `All ${Model.modelName} retrieved successfully`,

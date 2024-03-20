@@ -19,6 +19,53 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    Blog:
+      type: object
+      properties:
+        image:
+          type: string
+          description: The URL of the image for the blog
+        title:
+          type: string
+          description: The title of the blog
+        description:
+          type: string
+          description: The description of the blog
+        category:
+          type: string
+          description: The category of the blog
+        readmin:
+          type: string
+          description: The readmin of the blog
+        commentedBy:
+          type: array
+          items:
+            type: string
+          description: List of users who commented on the blog
+        comments:
+          type: array
+          items:
+            type: string
+          description: List of comments on the blog
+        likedBy:
+          type: array
+          items:
+            type: string
+          description: List of users who liked the blog
+        likes:
+          type: number
+          description: The number of likes for the blog
+        views:
+          type: number
+          description: The number of views for the blog
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time when the blog was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time when the blog was last updated
     Testimony:
       type: object
       properties:
@@ -903,5 +950,117 @@ paths:
           description: Testimony not found
         '500':
          description: Internal server error
+  /blogs/createBlog:
+    post:
+      summary: Create a Blog
+      tags: [Blogs]
+      operationId: createBlog
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: The image file for the blog
+                title:
+                  type: string
+                  description: The title of the blog
+                description:
+                  type: string
+                  description: The description of the blog
+                category:
+                  type: string
+                  description: The category of the blog
+                readmin:
+                  type: string
+                  description: The readmin of the blog
+      responses:
+        '201':
+          description: Blog created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'
+  /blogs/getBlog:
+    get:
+      summary: Get all Blogs
+      tags: [Blogs]
+      operationId: getBlogs
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Blog'
+  /blogs/getBlog/{id}:
+    get:
+      summary: Get a Blog by ID
+      tags: [Blogs]
+      operationId: getBlogById
+      parameters:
+        - name: id
+          in: path
+          description: ID of the blog to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'
+  /blogs/updateBlog/{id}:
+    put:
+      summary: Update a Blog
+      tags: [Blogs]
+      operationId: updateBlog
+      parameters:
+        - name: id
+          in: path
+          description: ID of the blog to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Blog'
+      responses:
+        '200':
+          description: Blog updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'
+  /blogs/deleteBlog/{id}:
+    delete:
+      summary: Delete a Blog
+      tags: [Blogs]
+      operationId: deleteBlog
+      parameters:
+        - name: id
+          in: path
+          description: ID of the blog to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Blog deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'       
       
  

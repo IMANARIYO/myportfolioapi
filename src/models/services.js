@@ -25,6 +25,6 @@ const serviceSchema = new Schema({
     type: [String],
     default: []
   }
-}).set('strictPopulate', false);
+}, { timestamps: true }).set('strictPopulate', false);
 const Service = model('Service', serviceSchema);
 export default Service;

@@ -35,6 +35,6 @@ const testimonySchema = new Schema({
    ref: 'Disease',
    required: false
  }]
-}).set('strictPopulate', false);
+}, { timestamps: true }).set('strictPopulate', false);
 const Testimony = model('Testimony', testimonySchema);
 export default Testimony;
