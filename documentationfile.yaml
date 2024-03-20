@@ -950,7 +950,7 @@ paths:
           description: Testimony not found
         '500':
          description: Internal server error
-  /blogs/createBlog:
+  /Blogs/createBlog:
     post:
       summary: Create a Blog
       tags: [Blogs]
@@ -985,7 +985,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Blog'
-  /blogs/getBlog:
+  /Blogs/getBlogs:
     get:
       summary: Get all Blogs
       tags: [Blogs]
@@ -999,7 +999,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Blog'
-  /blogs/getBlog/{id}:
+  /Blogs/getBlog/{id}:
     get:
       summary: Get a Blog by ID
       tags: [Blogs]
@@ -1018,7 +1018,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Blog'
-  /blogs/updateBlog/{id}:
+  /Blogs/updateBlog/{id}:
     put:
       summary: Update a Blog
       tags: [Blogs]
@@ -1043,7 +1043,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Blog'
-  /blogs/deleteBlog/{id}:
+  /Blogs/deleteBlog/{id}:
     delete:
       summary: Delete a Blog
       tags: [Blogs]
