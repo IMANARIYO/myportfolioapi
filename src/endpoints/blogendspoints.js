@@ -6,7 +6,7 @@ import { createModelHandler, readModelHandler, updateModelHandler, deleteModelHa
 const blogRouter = express.Router();
 
 blogRouter.post('/createBlog', uploaded, createModelHandler(BlogModel));
-blogRouter.get('/getBlog', readModelHandler(BlogModel));
+blogRouter.get('/getBlogs', readModelHandler(BlogModel));
 blogRouter.get('/getBlog/:id', readModelHandler(BlogModel));
 blogRouter.put('/updateBlog/:id', uploaded, updateModelHandler(BlogModel));
 blogRouter.delete('/deleteBlog/:id', deleteModelHandler(BlogModel));
