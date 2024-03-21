@@ -19,6 +19,32 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    Comment:
+      type: object
+      properties:
+        user:
+          type: string
+          description: The ID of the user who made the comment
+        blog:
+          type: string
+          description: The ID of the blog post the comment is made on
+        comment:
+          type: string
+          description: The content of the comment
+        likes:
+          type: number
+          description: The number of likes for the comment
+        dislikes:
+          type: number
+          description: The number of dislikes for the comment
+        username:
+          type: string
+          description: The username of the user who made the comment
+      required:
+        - user
+        - blog
+        - comment
+        - username
     Blog:
       type: object
       properties:
@@ -192,6 +218,8 @@ paths:
     post:
       summary: Generate and Send OTP for Password Reset
       tags: [authentication]
+      security:
+        - bearerAuth: []
       operationId: generateAndSendOTP
       requestBody:
         required: true
@@ -216,6 +244,8 @@ paths:
     post:
       summary: Verify OTP and Update Password
       tags: [authentication]
+      security:
+        - bearerAuth: []
       operationId: verifyOTPAndUpdatePassword
       requestBody:
         required: true
@@ -250,6 +280,8 @@ paths:
     post:
       summary: Change Password (Authenticated Route)
       tags: [authentication]
+      security:
+        - bearerAuth: []
       operationId: changePassword
       parameters:
         - name: Authorization
@@ -954,6 +986,8 @@ paths:
     post:
       summary: Create a Blog
       tags: [Blogs]
+      security:
+        - bearerAuth: []
       operationId: createBlog
       requestBody:
         required: true
@@ -989,6 +1023,8 @@ paths:
     get:
       summary: Get all Blogs
       tags: [Blogs]
+      security:
+        - bearerAuth: []
       operationId: getBlogs
       responses:
         '200':
@@ -1003,6 +1039,8 @@ paths:
     get:
       summary: Get a Blog by ID
       tags: [Blogs]
+      security:
+        - bearerAuth: []
       operationId: getBlogById
       parameters:
         - name: id
@@ -1022,6 +1060,8 @@ paths:
     put:
       summary: Update a Blog
       tags: [Blogs]
+      security:
+        - bearerAuth: []
       operationId: updateBlog
       parameters:
         - name: id
@@ -1047,6 +1087,8 @@ paths:
     delete:
       summary: Delete a Blog
       tags: [Blogs]
+      security:
+        - bearerAuth: []
       operationId: deleteBlog
       parameters:
         - name: id
@@ -1062,5 +1104,142 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Blog'       
-      
+  /Blogs/dislikeBlog/{id}:
+    post:
+      summary: Dislike a Blog
+      tags: [Blogs]
+      security:
+        - bearerAuth: []
+      operationId: dislikeBlog
+      parameters:
+        - name: id
+          in: path
+          description: ID of the blog to dislike
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Blog disliked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'
+  /Blogs/likeBlog/{id}:
+    post:
+      summary: Like a Blog
+      tags: [Blogs]
+      security:
+        - bearerAuth: []
+      operationId: likeBlog
+      parameters:
+        - name: id
+          in: path
+          description: ID of the blog to like
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Blog liked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog' 
+  /comments/{blogId}:
+    post:
+      summary: Create a Comment
+      tags: [Comments]
+      security:
+        - bearerAuth: []
+      operationId: createComment
+      parameters:
+        - name: blogId
+          in: path
+          description: ID of the blog to which the comment belongs
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '201':
+          description: Comment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+    get:
+      summary: Get Comments for a Blog
+      tags: [Comments]
+      security:
+          - bearerAuth: []
+      operationId: getComments
+      parameters:
+        - name: blogId
+          in: path
+          description: ID of the blog to which the comments belong
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+  /comments/{commentId}:
+    patch:
+      summary: Update a Comment
+      tags: [Comments]
+      security:
+        - bearerAuth: []
+      operationId: updateComment
+      parameters:
+        - name: commentId
+          in: path
+          description: ID of the comment to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '200':
+          description: Comment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+    delete:
+      summary: Delete a Comment
+      tags: [Comments]
+      security:
+        - bearerAuth: []
+      operationId: deleteComment
+      parameters:
+        - name: commentId
+          in: path
+          description: ID of the comment to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comment deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'                
  

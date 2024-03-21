@@ -1,9 +1,9 @@
-import { userconst } from '../models/users.js'
+import { User } from '../models/users.js'
 import { passComparer, tokengenerating, passHashing } from '../utils/index.js'
 export const login = async (req, res) => {
   try {
     // console.log(req.body.email);
-    let user = await userconst.findOne({ email: req.body.email })
+    let user = await User.findOne({ email: req.body.email })
     if (user) {
       let istruepassword = await passComparer(req.body.password, user.password)
       if (istruepassword) {

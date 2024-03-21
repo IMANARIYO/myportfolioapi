@@ -1,51 +1,54 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
-const usersSchema = new mongoose.Schema({
-    userId:{type: mongoose.Schema.Types.ObjectId},
+const usersSchema = new mongoose.Schema(
+  {
+    userId: { type: mongoose.Schema.Types.ObjectId },
     fullNames: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     email: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
-    phoneNumber:{type:String,required:false},
-    image:{type:String,
-    required:false},
+    phoneNumber: { type: String, required: false },
+    image: {
+      type: String,
+      required: false
+    },
     password: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
-    gender:{type:String},
+    gender: { type: String },
     role: {
-        type: String,
-        default:"user",
-       required:false
+      type: String,
+      default: 'user',
+      required: false
     },
     otpExpiresAt: {
-        type: String,
-        required: false
+      type: String,
+      required: false
     },
     otp: {
-        type: String,
-        required: false
+      type: String,
+      required: false
     },
-    token:{type:String,
+    token: {
+      type: String
     },
-    verified:{type:Boolean,
-    default:false   },
-    
-}, {
-    timestamps: { currentTime: () => new Date() }, 
+    verified: {
+      type: Boolean,
+      default: false
+    }
+  },
+  {
+    timestamps: { currentTime: () => new Date() }
   }
-
-).set('strictPopulate', false);
+).set('strictPopulate', false)
 usersSchema.pre('save', function (next) {
-    this.userId=this._id;
-    const now = new Date();
-    next();
-  });
- export const userconst = mongoose.model('users', usersSchema);
-
- 
+  this.userId = this._id
+  const now = new Date()
+  next()
+})
+export const User = mongoose.model('users', usersSchema)

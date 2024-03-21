@@ -85,8 +85,13 @@ const handleModelOperation = (Model, operation) => {
         case 'read':
           if (req.params.id) {
             result = await Model.findById(req.params.id)
-         .populate('tetsimonies')
-          
+            .populate('tetsimonies')
+            .populate('commentedBy')
+            .populate('comments')
+            .populate('likedBy')
+            .populate('dislikedBy')
+            .populate('likedBy')
+            .populate('blog')
             
             res.status(200).json({
               status: 'success',
@@ -95,9 +100,14 @@ const handleModelOperation = (Model, operation) => {
             })
           } else {
             result = await Model.find()
-             
-              .populate('tetsimonies')
-            
+            .populate('tetsimonies')
+            .populate('commentedBy')
+            .populate('comments')
+            .populate('likedBy')
+            .populate('dislikedBy')
+            .populate('likedBy')
+            .populate('blog')
+
             res.status(200).json({
               status: 'success',
               message: `All ${Model.modelName} retrieved successfully`,
@@ -131,25 +141,7 @@ const handleModelOperation = (Model, operation) => {
             htmlMessagerespondContact(req.body.replaysubbject,req.body.replaymessage,  name,company)
             )
           }
-          if (Model === Appointment) {
-            let name = documentToUpdate.Name;
-            let email = documentToUpdate.Email;
-            let scheduleddate = req.body.scheduleddate;
-            let response = "";
-          console.log("-------------------------",req.body.scheduleddate)
-            if (!req.body.response) {
-              response = "Appointment has been accepted";
-            } else {
-              response = req.body.response; 
-            }
-            await sendEmail(
-              email,
-              ' MUsa health cares Appointment Confirmation', 
-              response, 
-              htmlMessagerespondAppointment(response, `Your appointment is scheduled for ${scheduleddate}.`, name, "Musa Health Care") // Generate HTML message
-            );
-          }
-          
+   
           documentToUpdate.set(req.body)
           result = await documentToUpdate.save()
           res.status(200).json({
@@ -194,3 +186,4 @@ export const updateModelHandler = Model => {
 export const deleteModelHandler = Model => {
   return handleModelOperation(Model, 'delete')
 }
+            

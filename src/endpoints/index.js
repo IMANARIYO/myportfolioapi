@@ -14,5 +14,5 @@ mainRouter.use('/contact',contactRouter)
 mainRouter.use('/service',serviceRouter)
 mainRouter.use('/testimony',testimonyRouter)
 mainRouter.use('/Blogs',blogRouter)
-mainRouter.use('/comment',commentRouter)
+mainRouter.use('/comments',commentRouter)
 export default mainRouter;
