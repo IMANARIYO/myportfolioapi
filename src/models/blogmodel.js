@@ -66,7 +66,7 @@ const blogSchema = new mongoose.Schema(
     }
   },
   { timestamps: true }
-)
+).set('strictPopulate', false)
 
 blogSchema
   .pre('save', function (next) {
@@ -78,7 +78,7 @@ blogSchema
     }
     next()
   })
-  .set('strictPopulate', false)
+  
 
 const BlogModel = mongoose.model('Blog', blogSchema)
 

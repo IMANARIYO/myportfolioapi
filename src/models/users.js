@@ -51,4 +51,4 @@ usersSchema.pre('save', function (next) {
   const now = new Date()
   next()
 })
-export const User = mongoose.model('users', usersSchema)
+export const User = mongoose.model('User', usersSchema)
