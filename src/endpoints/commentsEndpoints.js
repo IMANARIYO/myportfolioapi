@@ -1,12 +1,15 @@
 import express from 'express';
 import * as commentControllers from '../controllers/commentcontrollers.js';
+import { verifyingtoken } from '../utils/jwtfunctions.js';
+
 
 const commentRouter = express.Router();
 
 
-commentRouter.post('/comments/:blogId', commentControllers.createComment);
-commentRouter.get('/comments/:blogId', commentControllers.getComments);
-commentRouter.patch('/comments/:commentId', commentControllers.updateComment);
-commentRouter.delete('/comments/:commentId', commentControllers.deleteComment);
+commentRouter.get('/:blogId', commentControllers.getComments);
+commentRouter.use(verifyingtoken);
+commentRouter.post('/:blogId', commentControllers.createComment);
+commentRouter.patch('/:commentId', commentControllers.updateComment);
+commentRouter.delete('/:commentId', commentControllers.deleteComment);
 
 export default commentRouter;

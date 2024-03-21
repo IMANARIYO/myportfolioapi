@@ -17,7 +17,7 @@ export async function createComment(req, res) {
         $push: { comments: savedComment._id },
         $addToSet: { commentedBy: req.user._id },
       });
-      BlogModel.save();
+     
     res.status(201).json(savedComment);
   } catch (error) {
     res.status(500).json({ message: error.message });
