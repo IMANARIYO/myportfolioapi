@@ -13,7 +13,7 @@ blogRouter.get('/getBlogs', readModelHandler(BlogModel));
 blogRouter.get('/getBlog/:id', readModelHandler(BlogModel));
 blogRouter.put('/updateBlog/:id', uploaded, updateModelHandler(BlogModel));
 blogRouter.delete('/deleteBlog/:id', deleteModelHandler(BlogModel));
-blogRouter.use(verifyingtoken);
+// blogRouter.use(verifyingtoken);
 blogRouter.post('/likeBlogs/:blogId',likeBlog);
 blogRouter.post('/dislikeBlogs/:blogId',dislikeBlog);
 export default blogRouter;
