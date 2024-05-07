@@ -91,6 +91,7 @@ const handleModelOperation = (Model, operation) => {
             .populate('likedBy')
             .populate('dislikedBy')
             .populate('likedBy')
+            // .populate('user')
             .populate('blog')
             
             res.status(200).json({
@@ -107,6 +108,7 @@ const handleModelOperation = (Model, operation) => {
             .populate('dislikedBy')
             .populate('likedBy')
             .populate('blog')
+            // .populate('user')
 
             res.status(200).json({
               status: 'success',

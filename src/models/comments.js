@@ -23,7 +23,7 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: true
   }
-}).set('strictPopulate', false)
+},{ timestamps: true }).set('strictPopulate', false)
 
 const CommentModel = mongoose.model('Comment', commentSchema)
 export default CommentModel

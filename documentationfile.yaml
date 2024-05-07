@@ -114,18 +114,12 @@ components:
             type: string
             format: binary
           description: The additional imageslike of symptoms or what ever else files for the testimony
-        date:
-          type: string
-          format: date-time
-          description: The date of the testimony
         rating:
           type: number
           minimum: 0
           maximum: 5
           description: The rating of the testimony
-        disease:
-          type: string
-          description: The ID of the associated disease (optional)
+       
     Service:
       type: object
       properties:
@@ -713,40 +707,6 @@ paths:
                     type: string
                     format: binary
                   description: Images of the medicine
-                diseases:
-                  type: array
-                  items:
-                    type: string
-                  description: List of disease IDs associated with the medicine
-                treesUsed:
-                  type: array
-                  items:
-                    type: string
-                  description: List of tree IDs associated with the medicine
-                frequency:
-                  type: string
-                  description: Frequency of taking the medicine
-                additionMaterialsTomakeIt:
-                  type: array
-                  items:
-                    type: string
-                  description: Additional materials required to make the medicine
-                procedureToMake:
-                  type: string
-                  description: Procedure to make the medicine
-                procedureToTake:
-                  type: string
-                  description: Procedure to take the medicine
-                extraAdditionsTotakeit:
-                  type: array
-                  items:
-                    type: string
-                  description: Extra additions to take with the medicine
-                beneficiaries:
-                  type: array
-                  items:
-                    type: string
-                  description: Beneficiaries of the medicine
       responses:
         '201':
           description: Medicine created successfully

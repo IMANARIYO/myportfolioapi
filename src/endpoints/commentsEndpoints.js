@@ -7,7 +7,7 @@ const commentRouter = express.Router();
 
 
 commentRouter.get('/:blogId', commentControllers.getComments);
-// commentRouter.use(verifyingtoken);
+commentRouter.use(verifyingtoken);
 commentRouter.post('/:blogId', commentControllers.createComment);
 commentRouter.patch('/:commentId', commentControllers.updateComment);
 commentRouter.delete('/:commentId', commentControllers.deleteComment);

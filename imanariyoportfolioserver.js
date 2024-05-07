@@ -16,11 +16,12 @@ app.use(cors());
 const swaggerDocument = yaml.load("./documentationfile.yaml");
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/",mainRouter)
-app.use('*',badroutes)
-app.use(errosingeneral)
 app.use((req, res) => {
   res.status(404).json({ message: "Welcome to the API! This route is not found." });
 });
+app.use('*',badroutes)
+app.use(errosingeneral)
+
 async function sendSms() {
   const client = new twilio(process.env.twilioaccountSid, process.env.twilioAuthToken);
   return client.messages

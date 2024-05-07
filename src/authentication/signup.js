@@ -47,10 +47,10 @@ export const signup = catchAsync(async (req, res, next) => {
   newUserDetails.otp = verificationToken
   newUserDetails.otpExpiresAt = otpExpiresAt
   if (req.files && req.files.image) {
-    console.log('Images processing ', '____________________')
     newUserDetails.image = (await cloudinary.uploader.upload(
       req.files.image[0].path
     )).secure_url
+    console.log(newUserDetails.image)
   }
   const verificationLink = `https://routeeasyapi.onrender.com/auth/verify-email?token=${verificationToken}`
   let newUser = await User.create(newUserDetails)

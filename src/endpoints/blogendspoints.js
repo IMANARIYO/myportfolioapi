@@ -8,12 +8,12 @@ import { verifyingtoken } from "../utils/jwtfunctions.js";
 
 const blogRouter = express.Router();
 
-blogRouter.post('/createBlog', uploaded, createModelHandler(BlogModel));
 blogRouter.get('/getBlogs', readModelHandler(BlogModel));
 blogRouter.get('/getBlog/:id', readModelHandler(BlogModel));
-blogRouter.put('/updateBlog/:id', uploaded, updateModelHandler(BlogModel));
+blogRouter.post('/createBlog', uploaded, createModelHandler(BlogModel));
 blogRouter.delete('/deleteBlog/:id', deleteModelHandler(BlogModel));
-// blogRouter.use(verifyingtoken);
-blogRouter.post('/likeBlogs/:blogId',likeBlog);
-blogRouter.post('/dislikeBlogs/:blogId',dislikeBlog);
+blogRouter.put('/updateBlog/:id', uploaded, updateModelHandler(BlogModel));
+blogRouter.use(verifyingtoken);
+blogRouter.post('/likeBlog/:blogId',likeBlog);
+blogRouter.post('/dislikeBlog/:blogId',dislikeBlog);
 export default blogRouter;

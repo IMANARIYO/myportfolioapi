@@ -24,7 +24,7 @@ export const verifyEmail = catchAsync(async (req, res, next) => {
   const storedOTP = user.otp
   console.log('storedOTP-----', storedOTP)
   console.log('receivedOTP-----', receivedOTP)
-  let validOTP = isOTPValid(storedOTP, receivedOTP, user.otpExpiresAt, res) // Assign the result of isOTPValid to validOTP
+  let validOTP = isOTPValid(storedOTP, receivedOTP, user.otpExpiresAt, res) 
   console.log('____________________________isOTPValid_____________', validOTP)
   if (validOTP === true) {
     console.log('storedOTP-----', storedOTP)

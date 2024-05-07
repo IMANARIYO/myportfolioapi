@@ -1,4 +1,11 @@
 import { User } from '../models/users.js'
+import { v2 as cloudinary } from 'cloudinary'
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
+})
+
 export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find()
@@ -37,6 +44,13 @@ export const deleteUserById = async (req, res) => {
 export const updateUserById = async (req, res) => {
   const { id } = req.params
   const updates = req.body
+  if (req.files && req.files.image) {
+    console.log('Images processing ', '____________________')
+    updates.image = (await cloudinary.uploader.upload(
+      req.files.image[0].path
+    )).secure_url
+  }
+ 
 
   try {
     const result = await User.findByIdAndUpdate(id, updates, { new: true })

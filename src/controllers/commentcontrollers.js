@@ -1,21 +1,27 @@
 import BlogModel from '../models/blogmodel.js';
 import CommentModel from '../models/comments.js';
+import { User } from '../models/users.js';
 
 // Create a comment
 export async function createComment(req, res) {
   try {
    
     const { blogId } = req.params;
+
     let newObject = { ...req.body }
     newObject.blog = blogId;
     newObject.user= req.user._id;
+    // newObject.user= '65f6107cdea068b7db944c04';  for fast testing purpose
+    let userID=newObject.user;
     newObject.username= req.user.fullNames;
+    // newObject.username= "imanariyo";  for fast teting pupose
     
 
     const savedComment = await CommentModel.create(newObject);
+    console.log("here",blogId);
     await BlogModel.findByIdAndUpdate(blogId, {
         $push: { comments: savedComment._id },
-        $addToSet: { commentedBy: req.user._id },
+        $addToSet: { commentedBy: userID },
       });
      
     res.status(201).json(savedComment);
@@ -33,6 +39,7 @@ export async function getComments(req, res) {
             .populate('commentedBy')
             .populate('comments')
             .populate('likedBy')
+            // .populate('user')
             .populate('dislikedBy')
             .populate('likedBy')
             .populate('blog')

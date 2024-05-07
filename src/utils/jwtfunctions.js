@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 export const tokengenerating = payload => {
-    console.log("-----the    process.env.JWT_EXP is ", process.env.JWT_EXP)
+    console.log("-----theprocess.env.JWT_EXP is ", process.env.JWT_EXP)
   let token = jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXP
   });

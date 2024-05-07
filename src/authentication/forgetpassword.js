@@ -60,3 +60,4 @@ export const verifyOTPAndUpdatePassword = async (req, res) => {
     return res.status(200).json({ message: 'Password updated successfully.' })
   }
 }
+
