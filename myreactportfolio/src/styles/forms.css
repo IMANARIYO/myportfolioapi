@@ -1,0 +1,117 @@
+/* UserForm.css */
+
+.form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  z-index: 20000000;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.form-container {
+  background-color: #fff; /* White background for the form */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow for depth */
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.image-preview {
+    /* margin-top: 10px;
+    max-width: 100%; */
+    height: 100px;
+    width: 100px;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease; /* Add transition effect */
+  }
+  
+  /* Hover effect: make image smaller */
+  .image-preview:hover {
+    transform: scale(0.9); /* Scale down to 90% of original size */
+  }
+
+.form-header h2 {
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: #999;
+}
+
+.add-update-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  margin-bottom: 15px;
+}
+
+.add-update-form-input {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-update-form-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff; /* Blue button */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-update-form-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Additional styling for select input */
+.add-update-form-input[type="file"] {
+  margin-top: 5px;
+}
+
+.add-update-form-input[type="file"]:focus {
+  outline: none;
+}
+
+/* Styling for select input */
+.add-update-form-input[type="file"] {
+  cursor: pointer;
+}
+.add-update-form-label textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical; /* Allow vertical resizing */
+  }
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+  .form-container {
+    width: 90%;
+  }
+}
