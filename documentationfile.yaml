@@ -10,7 +10,7 @@ info:
     url: "tel:0787795163"
 servers:
   - url: http://localhost:3330
-  - url: https://imanariyobaptisteportfolioapi.onrender.com
+  - url: https://myportfolioapi-8vku.onrender.com
     description: Local development server
 components:
   securitySchemes:
