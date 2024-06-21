@@ -1,5 +1,6 @@
-import { User } from '../models/users.js'
-import { passComparer, tokengenerating, passHashing } from '../utils/index.js'
+import { User } from "../models/users.js";
+import { passComparer, passHashing, tokengenerating } from "../utils/index.js";
+
 export const login = async (req, res) => {
   try {
     // console.log(req.body.email);
@@ -12,7 +13,8 @@ export const login = async (req, res) => {
           _id: user._id,
           email: user.email
         })
-        res.status(200).json({
+        console.log(user)
+      return res.status(200).json({
           message: 'user logged in succeful',
           access_token: token,
           user: user
