@@ -50,6 +50,7 @@ components:
       properties:
         image:
           type: string
+          format: binary
           description: The URL of the image for the blog
         title:
           type: string
