@@ -63,6 +63,31 @@ const handleModelOperation = (Model, operation) => {
             message: `${Model.modelName} created successfully`,
             data: result
           });
+
+          // Send an email notification if the model is Contact
+          if (Model === Contact) {
+            const { name, email, subject, message,telphone,telephone} = req.body;
+
+            // Compose the email content
+            const textContent = `You have a new contact request from ${name} (${email}).\n\nMessage:\n${message}`;
+            const htmlContent = `
+              <h3>New Contact Request  from my porfllolio</h3>
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Subject:</strong> ${subject}</p>
+              <p><strong>telphone:</strong> ${telphone}</p>
+              <p>${telephone}</p>
+              <p><strong>Message:</strong><br>${message}</p>
+            `;
+
+            // Send the email
+            await sendEmail(
+              'imanariyobaptiste@gmail.com',  // Your email address
+              'New Contact Request',  // Email subject
+              textContent,
+              htmlContent
+            );
+          }
           break;
         case 'read':
           if (req.params.id) {
@@ -110,11 +135,11 @@ const handleModelOperation = (Model, operation) => {
             
             let contacterEmail = documentToUpdate.email;
             let contacterName = documentToUpdate.name;
-            let company = "musahealth care";
+            let company = "imanariyo baptiste";
             await sendEmail(
-              contacterEmail,
-              'from musaHealthcare contact',
-              'gusubiza',
+              'imanariyobaptiste@gmail.com',
+              'Contact Request Reply',
+              'You have replied to a contact request.',
               htmlMessagerespondContact(req.body.replaysubject, req.body.replaymessage, contacterName, company)
             );
           }
@@ -169,7 +194,8 @@ const handleModelOperation = (Model, operation) => {
       next(error);
     }
   });
-}
+};
+
 
 export const createModelHandler = Model => handleModelOperation(Model, 'create');
 export const readModelHandler = Model => handleModelOperation(Model, 'read');
