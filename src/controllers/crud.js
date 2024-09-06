@@ -137,9 +137,9 @@ const handleModelOperation = (Model, operation) => {
             let contacterName = documentToUpdate.name;
             let company = "imanariyo baptiste";
             await sendEmail(
-              'imanariyobaptiste@gmail.com',
+              contacterEmail,
               'Contact Request Reply',
-              'You have replied to a contact request.',
+              'reply from imanariyo baptiste',
               htmlMessagerespondContact(req.body.replaysubject, req.body.replaymessage, contacterName, company)
             );
           }
