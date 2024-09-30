@@ -191,6 +191,7 @@ const handleModelOperation = (Model, operation) => {
           throw new AppError('Invalid operation', 400);
       }
     } catch (error) {
+      console.log(error)
       next(error);
     }
   });

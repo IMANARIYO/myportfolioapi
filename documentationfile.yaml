@@ -102,25 +102,40 @@ components:
         contacts:
           type: string
           description: The contacts of the testimonier
-        maintestimony:
+        mainTestimony:
           type: string
           description: The content of the testimony
+        company:
+          type: string
+          description: The company associated with the testimonier
         image:
           type: string
           format: binary
-          description: The image file for the testimony it may be used as profile
+          description: The image file for the testimony; may be used as a profile picture
         images:
           type: array
           items:
             type: string
             format: binary
-          description: The additional imageslike of symptoms or what ever else files for the testimony
+          description: Additional images like symptoms or any other files related to the testimony
+        professional:
+          type: string
+          description: The profession of the testimonier
+        service:
+          type: string
+          description: The type of service the testimonier is providing feedback about
+        from:
+          type: string
+          description: Start date of the testimony or service
+        to:
+          type: string
+          description: End date of the testimony or service
         rating:
           type: number
           minimum: 0
           maximum: 5
           description: The rating of the testimony
-    
+
     Project:
       type: object
       properties:
@@ -767,7 +782,7 @@ paths:
  
   
     
-    /service/createService:
+  /service/createService:
     post:
       tags:
         - Service
