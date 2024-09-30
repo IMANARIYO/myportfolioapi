@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema, model } = mongoose;
 
@@ -77,7 +77,7 @@ const projectSchema = new Schema({
         type: Number,
         default: 0
       }
-});
+}).set('strictPopulate', false);
 
 // Create model
 const Project = model('Project', projectSchema);

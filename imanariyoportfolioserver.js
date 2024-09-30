@@ -1,15 +1,16 @@
+import bodyParser from "body-parser";
+import cors from "cors";
 import dotenv from "dotenv";
+import express from "express";
+import mainRouter from "./src/endpoints/index.js";
+import mongoose from "mongoose";
+import swaggerUi from "swagger-ui-express";
+import twilio from "twilio";
+import yaml from "yamljs";
+import { badroutes, errosingeneral } from "./src/middlewares/globaleerorshandling.js";
+
 dotenv.config();
 
-import yaml from "yamljs";
-import twilio from "twilio";
-import cors from "cors";
-import express from "express";
-import bodyParser from "body-parser";
-import mongoose from "mongoose";
-import mainRouter from "./src/endpoints/index.js";
-import { badroutes,errosingeneral } from "./src/middlewares/globaleerorshandling.js";
-import swaggerUi from 'swagger-ui-express';
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -44,6 +45,6 @@ mongoose
   });
 //sendSms();
 app.listen(process.env.PORT, () => {
-  console.log(`Server is v running on the port http://localhost:${process.env.PORT}`);
+  console.log(`Server is v running on the port http://localhost:${process.env.PORT}/api-docs`);
 });
 
