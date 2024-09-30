@@ -198,15 +198,31 @@ components:
         image:
           type: string
           format: binary
-          description: The image of the service
+          description: The image URL of the service
+        alt:
+          type: string
+          description: Alt text for accessibility purposes
+        title:
+          type: string
+          description: Title of the service
         description:
           type: string
           description: Description of the service
+        overlayTitle:
+          type: string
+          description: Overlay title displayed on hover or overlay UI
+        overlayDescription:
+          type: string
+          description: Additional overlay description for more context
+        overlayLink:
+          type: string
+          description: Call-to-action link in the overlay
         beneficiaries:
           type: array
           items:
             type: string
-          description: List of beneficiaries
+          description: List of beneficiaries or target audience
+
 paths:
   /auth/signup:
     post:
