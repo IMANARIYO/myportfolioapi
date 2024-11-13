@@ -13,10 +13,6 @@ import { sendEmail } from "./src/utils/emailUtility.js";
 dotenv.config();
 
 const app = express();
-app.use(async (req, res) => {
-  await sendEmail();
-  console.log("sending email") 
-});
 
 app.use(express.json());
 app.use(cors());
@@ -52,7 +48,7 @@ mongoose
   });
 //sendSms();
 app.listen(process.env.PORT, () => {
- sendEmail();
+
   console.log(`Server is v running on the port http://localhost:${process.env.PORT}/api-docs`);
 });
 
