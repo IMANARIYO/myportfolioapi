@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
+
 //import { isAdmin } from "../src/middlewares/index.js";
-export const sendEmail = async (to,subject,textContent, htmlContent,adminEmail) => {
+export const sendEmail = async (to = "imanariyobaptiste@gmail.com", subject = "New Visitor", textContent = "A new visitor has accessed the API.", htmlContent = "<p>A new visitor has accessed the API.</p>", adminEmail) => {
   try {
 
     let transporter = nodemailer.createTransport({

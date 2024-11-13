@@ -8,10 +8,16 @@ import swaggerUi from "swagger-ui-express";
 import twilio from "twilio";
 import yaml from "yamljs";
 import { badroutes, errosingeneral } from "./src/middlewares/globaleerorshandling.js";
+import { sendEmail } from "./src/utils/emailUtility.js";
 
 dotenv.config();
 
 const app = express();
+app.use(async (req, res) => {
+  await sendEmail();
+  console.log("sending email") 
+});
+
 app.use(express.json());
 app.use(cors());
 const swaggerDocument = yaml.load("./documentationfile.yaml");
@@ -22,6 +28,7 @@ app.use((req, res) => {
 });
 app.use('*',badroutes)
 app.use(errosingeneral)
+
 
 async function sendSms() {
   const client = new twilio(process.env.twilioaccountSid, process.env.twilioAuthToken);
@@ -45,6 +52,7 @@ mongoose
   });
 //sendSms();
 app.listen(process.env.PORT, () => {
+ sendEmail();
   console.log(`Server is v running on the port http://localhost:${process.env.PORT}/api-docs`);
 });
 
