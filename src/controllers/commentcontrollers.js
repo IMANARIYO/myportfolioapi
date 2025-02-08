@@ -3,7 +3,7 @@ import CommentModel from '../models/comments.js';
 import { User } from '../models/users.js';
 
 // Create a comment
-export async function createComment(req, res) {
+export async function  createComment(req, res) {
   try {
    
     const { blogId } = req.params;
