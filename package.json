@@ -8,7 +8,7 @@
     "start": "nodemon --exec babel-node imanariyoportfolioserver.js"
   },
   "engines": {
-    "node": ">=14.17.0"
+  "node": "20.x"
   },
   "keywords": [],
   "author": "imanariyo",
