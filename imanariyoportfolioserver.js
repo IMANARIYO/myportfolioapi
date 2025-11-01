@@ -12,39 +12,73 @@ import { badroutes, errosingeneral } from "./src/middlewares/globaleerorshandlin
 dotenv.config();
 
 const app = express();
+
+// ✅ Secure CORS setup (production + local dev)
+const allowedOrigins = [
+  "https://imanariyo-portfolio-web.vercel.app", // production frontend
+  "http://localhost:3000", // local development
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+    credentials: true,
+  })
+);
+
+app.use(bodyParser.json());
 app.use(express.json());
-app.use(cors());
+
+// Swagger setup
 const swaggerDocument = yaml.load("./documentationfile.yaml");
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use("/",mainRouter)
+
+// Main routes
+app.use("/", mainRouter);
+
+// Default 404 route
 app.use((req, res) => {
   res.status(404).json({ message: "Welcome to the API! This route is not found." });
 });
-app.use('*',badroutes)
-app.use(errosingeneral)
 
+// Global error handling
+app.use("*", badroutes);
+app.use(errosingeneral);
+
+// Twilio test function
 async function sendSms() {
   const client = new twilio(process.env.twilioaccountSid, process.env.twilioAuthToken);
-  return client.messages
-    .create({ body: 'Hey this is themes', from:'+19292426206', to: '+250787795163' })
-    .then(message => console.log(message))
-    .catch(err => console.error(err));
+  try {
+    const message = await client.messages.create({
+      body: "Hey this is themes",
+      from: "+19292426206",
+      to: "+250787795163",
+    });
+    console.log(message);
+  } catch (err) {
+    console.error(err);
+  }
 }
-  
-app.use(bodyParser.json());
+
+// Database connection
 mongoose
   .connect(process.env.DB_CONNECTION_LIVE, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch(error => {
-    console.error("Error connecting to MongoDB:", error);
-  });
-//sendSms();
-app.listen(process.env.PORT, () => {
-  console.log(`Server is v running on the port http://localhost:${process.env.PORT}/api-docs`);
-});
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((error) => console.error("❌ Error connecting to MongoDB:", error));
 
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}/api-docs`);
+});
